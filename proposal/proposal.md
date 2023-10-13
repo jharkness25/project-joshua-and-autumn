@@ -53,6 +53,41 @@ station data for Gulf of Maine, representing sediment sampling
 locations. You can see the outline of the New England coast where points
 are dense, representing greater sampling.
 
+``` r
+StationOrganics = right_join(stations, Organics)
+```
+
+    ## Joining with `by = join_by(`Short Field Name`, LOCAL_ID, UNIQUE_ID,
+    ## SRCE_OR_RF)`
+
+``` r
+BostonOrganics = filter(StationOrganics, GEN_LOC_NM %in% c("BOSTON INNER HARBOR","NORTHWEST BOSTON HARBOR","CENTRAL BOSTON HARBOR"))
+```
+
+``` r
+BostonOrganics %>%
+  ggplot(aes(x = GEN_LOC_NM, y = PCB_T_UGG))+
+  geom_boxplot()
+```
+
+    ## Warning: Removed 1302 rows containing non-finite values (`stat_boxplot()`).
+
+![](proposal_files/figure-gfm/pcb-box1-1.png)<!-- -->
+
+``` r
+BostonOrganics %>%
+  ggplot(aes(x = GEN_LOC_NM, y = PCB_T_UGG))+
+  geom_boxplot()+
+  ylim(0,7.5)
+```
+
+    ## Warning: Removed 1318 rows containing non-finite values (`stat_boxplot()`).
+
+![](proposal_files/figure-gfm/pcb-box1-zoomed-1.png)<!-- --> Mean PCB
+abundance (ug/g) are less than 0.5 for Boston Inner Harbor, Central
+Boston Harbor, and Northwest Boston Harbor, but outliers are present as
+high as 3000ug/g.
+
 ## 3. Ethics review
 
 ## 4. Data analysis plan
