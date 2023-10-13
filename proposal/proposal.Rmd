@@ -1,6 +1,7 @@
 ---
-title: "Project proposal"
-author: "Team name"
+title: "Project proposal: Contaminated sediments in the Gulf of Maine"
+author: "Joshua Harkness and Autumn Pauly,"
+date: "October 2023"
 output: github_document
 ---
 
