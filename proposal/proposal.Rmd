@@ -20,8 +20,13 @@ We are most interested in examining patterns in distribution and abundance of or
 
 
 ## 2. Data
-```{r load-data, warning=FALSE}
+```{r load-data, message=FALSE, warning=FALSE}
 stations = read_excel("/cloud/project/data/STAT2002.xls", sheet = 2, skip = 3)
+sediments = read_excel("/cloud/project/data/TXTR2002.xls", sheet = 2, skip = 3)
+PCBs = read_excel("/cloud/project/data/PCBP2002.xls", sheet = 2, skip = 3)
+PAHs = read_excel("/cloud/project/data/PAHS2002.xls", sheet = 2, skip = 3)
+Organics = read_excel("/cloud/project/data/GENO2002.xls", sheet = 2, skip = 3)
+Inorganics = read_excel("/cloud/project/data/INOR2002.xls", sheet = 2, skip = 3)
 ```
 
 ```{r}

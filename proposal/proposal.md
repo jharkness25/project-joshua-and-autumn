@@ -32,6 +32,11 @@ purposes here.
 
 ``` r
 stations = read_excel("/cloud/project/data/STAT2002.xls", sheet = 2, skip = 3)
+sediments = read_excel("/cloud/project/data/TXTR2002.xls", sheet = 2, skip = 3)
+PCBs = read_excel("/cloud/project/data/PCBP2002.xls", sheet = 2, skip = 3)
+PAHs = read_excel("/cloud/project/data/PAHS2002.xls", sheet = 2, skip = 3)
+Organics = read_excel("/cloud/project/data/GENO2002.xls", sheet = 2, skip = 3)
+Inorganics = read_excel("/cloud/project/data/INOR2002.xls", sheet = 2, skip = 3)
 ```
 
 ``` r
