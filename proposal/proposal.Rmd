@@ -20,7 +20,17 @@ We are most interested in examining patterns in distribution and abundance of or
 
 
 ## 2. Data
+```{r load-data, warning=FALSE}
+stations = read_excel("/cloud/project/data/STAT2002.xls", sheet = 2, skip = 3)
+```
 
+```{r}
+stations %>%
+  ggplot(aes(x = LONGITUDE, y = LATITUDE))+
+  geom_point()+
+  theme_bw()
+```
+Map of raw station data for Gulf of Maine, representing sediment sampling locations.  You can see the outline of the New England coast where points are dense, representing greater sampling.
 
 ## 3. Ethics review
 

@@ -30,6 +30,24 @@ purposes here.
 
 ## 2. Data
 
+``` r
+stations = read_excel("/cloud/project/data/STAT2002.xls", sheet = 2, skip = 3)
+```
+
+``` r
+stations %>%
+  ggplot(aes(x = LONGITUDE, y = LATITUDE))+
+  geom_point()+
+  theme_bw()
+```
+
+    ## Warning: Removed 318 rows containing missing values (`geom_point()`).
+
+![](proposal_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> Map of raw
+station data for Gulf of Maine, representing sediment sampling
+locations. You can see the outline of the New England coast where points
+are dense, representing greater sampling.
+
 ## 3. Ethics review
 
 ## 4. Data analysis plan
