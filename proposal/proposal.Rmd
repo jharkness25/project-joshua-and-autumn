@@ -31,8 +31,23 @@ Taken as a whole, this database is quite large and a comprehensive analysis of a
 
 
 ## 2. Data
+#### Stations data
 ```{r glimpse-stations, echo=FALSE}
 glimpse(stations)
+```
+
+#### Sediments data
+```{r glimpse-sediments, echo=FALSE}
+glimpse(sediments)
+```
+
+#### PCB and pesticide data
+```{r glimpse-pcb, echo=FALSE}
+glimpse(PCBs)
+```
+#### PAH Data
+```{r glimpse-pah, echo=FALSE}
+glimpse(PAHs)
 ```
 
 
