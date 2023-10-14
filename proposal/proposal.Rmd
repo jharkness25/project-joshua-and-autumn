@@ -31,6 +31,10 @@ Taken as a whole, this database is quite large and a comprehensive analysis of a
 
 
 ## 2. Data
+```{r glimpse-stations, echo=FALSE}
+glimpse(stations)
+```
+
 
 
 ```{r stations-map, echo=FALSE, warning=FALSE}
