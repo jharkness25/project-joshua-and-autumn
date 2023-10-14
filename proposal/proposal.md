@@ -703,7 +703,25 @@ subsetting (base R) where it is more efficient than fitering and saving
 as new objects. Once we have pared our data file down to what we will
 use in our analysis, it will be helpful to join each data file to create
 a single working dataframe, which will include all of the variables of
-interest. \#### Statistical analysis
+interest.
+
+#### Statistical analysis
+
+We will conduct appropriate statistical analyses as part of our project.
+Research hypotheses we wish to test are: 1) Are specific organic
+contaminant concentrations significantly different between locations? 2)
+Are organic contaminant concentrations significantly different between
+initial sampling and resampling? 3) Are organic contaminant
+concentrations significantly related to any particular sediment
+character?
+
+We will test these hypothesis with simple T-tests, ANOVAs, and general
+linear models where our data meet parametric assumptions. Where
+non-parametric, we will use bootstrapping to test for significance. If
+our data requires it, we may use more complex statistical tests such as
+MANOVAs to test for difference within a matrix of parameters (e.g.,
+between several sediment characters). We will also likely employ
+Chi-Squared tests when testing between categorical variables.
 
 #### Visualizations
 
@@ -721,11 +739,9 @@ relationship of single numeric variables, such as statistical
 distributions of chemical concentrations. We will also make use of
 boxplots, bar plots, and potentially ridge and violin plots to display
 chemical concentrations and compare between specific locations (e.g.,
-between inshore and offshore).
-
-Concentration data may present a challenge due to its highly skewed
-nature (most values are at or close to 0), and outliers can be far
-outside the interquartile range.
+between inshore and offshore). Concentration data may present a
+challenge due to its highly skewed nature (most values are at or close
+to 0), and outliers can be far outside the interquartile range.
 
 ![](proposal_files/figure-gfm/join-stations-organics-1.png)<!-- -->
 
@@ -758,3 +774,23 @@ it is just as important to know where it was NOT detected – this is an
 important distinction between zeros and missing values. We will have to
 determine an approach that suits this situation best, creating useful
 graphics while appropriate displaying data.
+
+``` r
+DDT_T_NoZero = filter(StationOrganics, DDT_T_NGG != "0")
+
+DDT_T_NoZero %>%
+  ggplot(aes(x = DDT_T_NGG))+
+  geom_density()+
+  theme_minimal()
+```
+
+![](proposal_files/figure-gfm/density-ddt-nozero-1.png)<!-- -->
+
+Removing zeros from the data does not help much in this case, but it
+does make the smaller peaks on this density plot more visible.
+
+![](proposal_files/figure-gfm/map-ddt-1.png)<!-- -->
+
+Removing zeros from this data and visualizing using a hex plot helps
+show where concentrations of DDT are highest. The high count hexagons at
+lower left are apparently in and around Boston Harbor.
