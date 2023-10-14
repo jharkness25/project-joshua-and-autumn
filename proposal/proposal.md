@@ -683,12 +683,78 @@ Map of raw station data for Gulf of Maine, representing sediment
 sampling locations. You can see the outline of the New England coast
 where points are dense, representing greater sampling near-shore.
 
-![](proposal_files/figure-gfm/pcb-box1-1.png)<!-- -->
-![](proposal_files/figure-gfm/pcb-box1-zoomed-1.png)<!-- --> Mean PCB
-abundance (ug/g) are less than 0.5 for Boston Inner Harbor, Central
-Boston Harbor, and Northwest Boston Harbor, but outliers are present as
-high as 3000ug/g.
-
 ## 3. Ethics review
 
+Not applicable
+
 ## 4. Data analysis plan
+
+#### Data tidying
+
+The first step in our analysis will have to be the paring down of our
+ata files into more manageable forms; this means filtering and/or
+subsetting our data files to include only the variables we will need in
+our analysis. Many of the variables in each data file contain
+information that is not useful for our project: these include comments,
+notes, some calculated values, duplicates of geographical information,
+as well as some variables that are irrelevant to our research questions,
+and which we plan to exclude from our analysis. We may also make use of
+subsetting (base R) where it is more efficient than fitering and saving
+as new objects. Once we have pared our data file down to what we will
+use in our analysis, it will be helpful to join each data file to create
+a single working dataframe, which will include all of the variables of
+interest. \#### Statistical analysis
+
+#### Visualizations
+
+One of the main relationships we hope to better understand through this
+project is the spatial distribution of certain contaminants. We will
+need to associate contaminants and sediment data with X/Y coordinates
+(Lat/Lon, dms) through joining these data files with the stations data
+file. Then we will need to plot X/Y data and use colors or shapes to
+display the associated sediments/contaminants data. Pie charts may be
+useful to overlay on map plots to display percent composition of
+sediment types.
+
+Histograms and density plots will be useful in depicting the
+relationship of single numeric variables, such as statistical
+distributions of chemical concentrations. We will also make use of
+boxplots, bar plots, and potentially ridge and violin plots to display
+chemical concentrations and compare between specific locations (e.g.,
+between inshore and offshore).
+
+Concentration data may present a challenge due to its highly skewed
+nature (most values are at or close to 0), and outliers can be far
+outside the interquartile range.
+
+![](proposal_files/figure-gfm/join-stations-organics-1.png)<!-- -->
+
+In this boxplot comparing three subsites within Boston Harbor, the mean
+concentrations of each site are all close to 0, but Boston Inner Harbor
+has some highly significant outliers as high as 3000ug/g. This presents
+some graphical problems, as these boxplots appear as simple lines,
+preventing the viewer from inferring anything more than the Inner Harbor
+having some highly significant outliers.
+
+![](proposal_files/figure-gfm/pcb-box1-zoomed-1.png)<!-- -->
+
+Setting `ylim(0,7.5)` allows us to see the full data distribution of
+Central and Northwest Boston Harbors, but we lose the ability to see the
+significance of the Inner Harbor’s outliers. Mean PCB abundance (ug/g)
+are less than 0.5 for Boston Inner Harbor, Central Boston Harbor, and
+Northwest Boston Harbor.
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](proposal_files/figure-gfm/hist-ddt-1.png)<!-- -->
+
+![](proposal_files/figure-gfm/density-ddt-1.png)<!-- -->
+
+The same issues of skewness is encountered with histograms and density
+plots, due to the abundance of zeros in the dataset. Removing values
+equal to zero would improve he visual quality of the graphs, but it
+would only give us graphical information about where DDT WAS detected;
+it is just as important to know where it was NOT detected – this is an
+important distinction between zeros and missing values. We will have to
+determine an approach that suits this situation best, creating useful
+graphics while appropriate displaying data.
