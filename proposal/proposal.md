@@ -75,6 +75,16 @@ skewed data associated with chemical concentrations.
 
 ## 2. Data
 
+Our data files can be found in the ‘data’ folder in our project
+repository on GitHub. They are as follows:
+
+STAT2002.xls (stations data), TXTR2002.xls (sediment textural data),
+INOR2002.xls (inorganics), PCBS2002.xls (PCBs, pesticides), PAHS2002.xls
+(PAHs), GENO2002.xls (General organics)
+
+A bibliography of this database can be found here:
+<https://github.com/jharkness25/project-joshua-and-autumn/blob/main/data/GOMDBBib.doc>
+
 #### Stations data
 
     ## Rows: 7,847
