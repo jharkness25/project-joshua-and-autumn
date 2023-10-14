@@ -5,57 +5,65 @@ date: "October 2023"
 output: github_document
 ---
 
-```{r load-packages, message = FALSE}
+```{r load-packages, echo=FALSE, message = FALSE}
 library(tidyverse)
 library(broom)
 library(readxl)
 ```
 
-## 1. Introduction
-We will be looking at distributions and frequencies of contaminated sediments in the Gulf of Maine, using the Gulf of Maine Contaminated Sediments Database published by the U.S. Geological Survey in their Open-File Report 02-403.
-
-There are seven data files in this database which we will use in some form, principally these include geographic information on stations (collection sites), textural sediments data, and contaminants data.
-
-We are most interested in examining patterns in distribution and abundance of organic contaminants, which, in this dataset, are represented by polychlorinated biphenyls (PCBs), polycyclic aromatic hydrocarbons (PAHs), and organochlorine pesticides.  We may, however, examine inorganic contaminants, such as heavy metals, if we find that there is not as much organic contaminant data to be useful for our purposes here.
-
-
-## 2. Data
-```{r load-data, message=FALSE, warning=FALSE}
+```{r load-data, echo=FALSE, message=FALSE, warning=FALSE}
 stations = read_excel("/cloud/project/data/STAT2002.xls", sheet = 2, skip = 3)
 sediments = read_excel("/cloud/project/data/TXTR2002.xls", sheet = 2, skip = 3)
 PCBs = read_excel("/cloud/project/data/PCBP2002.xls", sheet = 2, skip = 3)
 PAHs = read_excel("/cloud/project/data/PAHS2002.xls", sheet = 2, skip = 3)
-Organics = read_excel("/cloud/project/data/GENO2002.xls", sheet = 2, skip = 3)
-Inorganics = read_excel("/cloud/project/data/INOR2002.xls", sheet = 2, skip = 3)
+organics = read_excel("/cloud/project/data/GENO2002.xls", sheet = 2, skip = 3)
+inorganics = read_excel("/cloud/project/data/INOR2002.xls", sheet = 2, skip = 3)
 ```
 
-```{r}
+## 1. Introduction
+We will be looking at distributions and concentrations of contaminated sediments in the Gulf of Maine, using the Gulf of Maine Contaminated Sediments Database published by the U.S. Geological Survey in their Open-File Report 02-403.
+
+There are seven data files in this database which we may use in some form, principally these include geographic information on stations (collection sites), textural sediments data, and contaminants data.  Each data file includes `r nrow(stations)` observations in `r ncol(organics)` to `r ncol(inorganics)` variables, respectively.  In this format, each observation represents a sediment sample; this unique ID is shared between each data file, allowing contaminant data to be associated with geographic location and other data.  Said another way, this is a database containing information on `r nrow(stations)` observations collected from the Gulf of Maine between `r min(stations$YEAR1, na.rm = T)` and `r max(stations$YEAR2, na.rm = T)` by multiple researchers as part of multiple projects.  
+
+The database includes data on the collection of sediment samples, including geographic location, by general and specific location categories (i.e., "Boston Harbor"), when the sample was collected, and by whom.  Sediment textural data includes particle size, percent composition of sand, gravel, silt, clay, etc., along with summary statistics and distributions of particle types/sizes within each sample.  The inorganics dataset includes concentrations of many inorganic contaminents, such as lead, mercury, arsenic, cadmium, and sample radioactivity; we are unlikely to use this dataset in our analysis.  Organic contaminants are split between three datasets: PCBs includes numerous polychlorinated biphenyls (PCBs), cyclohexanes, and organochlorine pesticides (such as DDT, DDE, aldrin, dieldrin, etc.)  PAHs includes polycyclic hydrocarbons (PAHs), which are hydrocarbon rings (excluding benzene) common in coal and oil products.  General organic contaminants includes butyls, total concentrations of PCBs, PAHs, and pesticides, and volatility of tested samples.
+
+Taken as a whole, this database is quite large and a comprehensive analysis of all the data it contains is unrealistic for this 5-week long project.  It is necessary to pare this database down to the components we wish to explore in the course of this project.  We are most interested in examining the relationship between sediments types and patterns of spatial distribution and concentrations of organic contaminants.  At this point, we are specifically interested in the relationships between PCBs, PAHs, organochlorine pesticides, and sediment type distribution and composition.
+
+
+## 2. Data
+
+
+```{r stations-map, echo=FALSE, warning=FALSE}
 stations %>%
   ggplot(aes(x = LONGITUDE, y = LATITUDE))+
   geom_point()+
   theme_bw()
 ```
-Map of raw station data for Gulf of Maine, representing sediment sampling locations.  You can see the outline of the New England coast where points are dense, representing greater sampling.
 
-```{r join-stations-organics}
-StationOrganics = right_join(stations, Organics)
+Map of raw station data for Gulf of Maine, representing sediment sampling locations.  You can see the outline of the New England coast where points are dense, representing greater sampling near-shore.
+
+```{r join-stations-organics, echo=FALSE}
+StationOrganics = right_join(stations, organics, by = "UNIQUE_ID")
 ```
-```{r}
+```{r filter-boston, echo=FALSE}
 BostonOrganics = filter(StationOrganics, GEN_LOC_NM %in% c("BOSTON INNER HARBOR","NORTHWEST BOSTON HARBOR","CENTRAL BOSTON HARBOR"))
 ```
 
-```{r pcb-box1}
+
+```{r pcb-box1, echo=FALSE, warning=FALSE}
 BostonOrganics %>%
   ggplot(aes(x = GEN_LOC_NM, y = PCB_T_UGG))+
   geom_boxplot()
 ```
-```{r pcb-box1-zoomed}
+```{r pcb-box1-zoomed, echo=FALSE, warning=FALSE}
 BostonOrganics %>%
   ggplot(aes(x = GEN_LOC_NM, y = PCB_T_UGG))+
   geom_boxplot()+
   ylim(0,7.5)
 ```
 Mean PCB abundance (ug/g) are less than 0.5 for Boston Inner Harbor, Central Boston Harbor, and Northwest Boston Harbor, but outliers are present as high as 3000ug/g.
+
+
 
 ## 3. Ethics review
 
