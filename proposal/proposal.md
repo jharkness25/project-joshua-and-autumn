@@ -22,18 +22,22 @@ on 7847 observations collected from the Gulf of Maine between 1955 and
 The database includes data on the collection of sediment samples,
 including geographic location, by general and specific location
 categories (i.e., “Boston Harbor”), when the sample was collected, and
-by whom. Sediment textural data includes particle size, percent
-composition of sand, gravel, silt, clay, etc., along with summary
-statistics and distributions of particle types/sizes within each sample.
-The inorganics dataset includes concentrations of many inorganic
-contaminents, such as lead, mercury, arsenic, cadmium, and sample
-radioactivity. Organic contaminants are split between three datasets:
-PCBs includes numerous polychlorinated biphenyls (PCBs), cyclohexanes,
-and organochlorine pesticides (such as DDT, DDE, aldrin, dieldrin, etc.)
-PAHs includes polycyclic hydrocarbons (PAHs), which are hydrocarbon
-rings (excluding benzene) common in coal and oil products. General
-organic contaminants includes butyls, total concentrations of PCBs,
-PAHs, and pesticides, and volatility of tested samples.
+by whom. Samples were collected from the sea floor using a “grab” or
+“core” method; a “core” being defined as when multiple subsamples were
+collected within a larger vertical sample. Station data is principally
+sample specific unique IDs, coordinates, and date of collection.
+Sediment textural data includes particle size, percent composition of
+sand, gravel, silt, clay, etc., along with summary statistics and
+distributions of particle types/sizes within each sample. The inorganics
+dataset includes concentrations of many inorganic contaminents, such as
+lead, mercury, arsenic, cadmium, and sample radioactivity. Organic
+contaminants are split between three datasets: PCBs includes numerous
+polychlorinated biphenyls (PCBs), cyclohexanes, and organochlorine
+pesticides (such as DDT, DDE, aldrin, dieldrin, etc.) PAHs includes
+polycyclic hydrocarbons (PAHs), which are hydrocarbon rings (excluding
+benzene) common in coal and oil products. General organic contaminants
+includes butyls, total concentrations of PCBs, PAHs, and pesticides, and
+volatility of tested samples.
 
 Taken as a whole, this database is quite large and a comprehensive
 analysis of all the data it contains is unrealistic for this 5-week long
@@ -677,6 +681,10 @@ A bibliography of this database can be found here:
     ## $ B_GHI_PYLQ   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
     ## $ B_GHI_PYLD   <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
 
+As shown here, there are a lot of missing values (NAs) in our data…there
+is also a lot of numeric variables, some useful categorical variables,
+and some formated date/time variables.
+
 ![](proposal_files/figure-gfm/stations-map-1.png)<!-- -->
 
 Map of raw station data for Gulf of Maine, representing sediment
@@ -721,7 +729,11 @@ non-parametric, we will use bootstrapping to test for significance. If
 our data requires it, we may use more complex statistical tests such as
 MANOVAs to test for difference within a matrix of parameters (e.g.,
 between several sediment characters). We will also likely employ
-Chi-Squared tests when testing between categorical variables.
+Chi-Squared tests when testing between categorical variables. Most
+statistical tests will be run with base R code, though we may use the
+`boot` package if we find it necessary to use bootstrapping. We will
+also calculate simple summary statistics where needed, such as mean,
+median, IQR, standard deviation, etc.
 
 #### Visualizations
 
@@ -730,9 +742,9 @@ project is the spatial distribution of certain contaminants. We will
 need to associate contaminants and sediment data with X/Y coordinates
 (Lat/Lon, dms) through joining these data files with the stations data
 file. Then we will need to plot X/Y data and use colors or shapes to
-display the associated sediments/contaminants data. Pie charts may be
-useful to overlay on map plots to display percent composition of
-sediment types.
+display the associated sediments/contaminants data. We will probably
+find the packages `leaflet` and `sp` useful. Pie charts may be useful to
+overlay on map plots to display percent composition of sediment types.
 
 Histograms and density plots will be useful in depicting the
 relationship of single numeric variables, such as statistical
@@ -760,6 +772,30 @@ significance of the Inner Harbor’s outliers. Mean PCB abundance (ug/g)
 are less than 0.5 for Boston Inner Harbor, Central Boston Harbor, and
 Northwest Boston Harbor.
 
+    ## # A tibble: 15 × 5
+    ##    GEN_LOC_NM                       mean  median       sd     IQR
+    ##    <chr>                           <dbl>   <dbl>    <dbl>   <dbl>
+    ##  1 43.5N to 44N; to 50M isobath   4.29    0       25.3     0.102 
+    ##  2 BOSTON INNER HARBOR           44.2     0.36   285.      0.685 
+    ##  3 CAPE ANN to 43.5N             26.9     0.0188 227.      0.0516
+    ##  4 CAPE COD BAY                   0.0113  0.0039   0.0137  0.0264
+    ##  5 CENTRAL BOSTON HARBOR          0.416   0.327    0.274   0.523 
+    ##  6 GULF OF MAINE, <=50M         NaN      NA       NA      NA     
+    ##  7 GULF OF MAINE, >50M ISOBATH    0.0257  0.02     0.0326  0.0249
+    ##  8 HARBOR APPROACHES              0.251   0.13     0.207   0.12  
+    ##  9 INLAND / RIVERS                0.0685  0        0.235   0     
+    ## 10 Intertidal Alantic Canada    NaN      NA       NA      NA     
+    ## 11 MASS BAYS                      0.0712  0.008    0.293   0.0258
+    ## 12 NORTHWEST BOSTON HARBOR        0.320   0.0610   0.763   0.289 
+    ## 13 North of 44; to 50M isobath    2.37    0       22.7     0     
+    ## 14 SOUTHEAST BOSTON HARBOR       18.4     0.056   73.2     0.2   
+    ## 15 <NA>                         NaN      NA       NA      NA
+
+Above is a table of some summary statistics for PCB concentrations
+(ug/g) by general location names for the Gulf of Maine. Skewness is
+apparent here as well, with all medians close to, or at zero. Note how
+high the means are for Boston Inner Harbor and Cape Ann to 43.5N.
+
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](proposal_files/figure-gfm/hist-ddt-1.png)<!-- -->
@@ -786,7 +822,8 @@ DDT_T_NoZero %>%
 
 ![](proposal_files/figure-gfm/density-ddt-nozero-1.png)<!-- -->
 
-Removing zeros from the data does not help much in this case, but it
+Removing zeros from the data does not help much in this case considering
+that there are still many observations near but not equal to 0, but it
 does make the smaller peaks on this density plot more visible.
 
 ![](proposal_files/figure-gfm/map-ddt-1.png)<!-- -->
