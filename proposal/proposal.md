@@ -711,7 +711,11 @@ subsetting (base R) where it is more efficient than fitering and saving
 as new objects. Once we have pared our data file down to what we will
 use in our analysis, it will be helpful to join each data file to create
 a single working dataframe, which will include all of the variables of
-interest.
+interest. Variables of interest are principally those giving location
+and date/time of sample collection, sediment characters including
+particle size, percent composition, distribution, and concentrations of
+contaminants of interest. At this point, we are unlikely to bring in any
+other data.
 
 #### Statistical analysis
 
