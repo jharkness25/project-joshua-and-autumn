@@ -744,11 +744,12 @@ median, IQR, standard deviation, etc.
 One of the main relationships we hope to better understand through this
 project is the spatial distribution of certain contaminants. We will
 need to associate contaminants and sediment data with X/Y coordinates
-(Lat/Lon, dms) through joining these data files with the stations data
+(Lat/Lon, dec.) through joining these data files with the stations data
 file. Then we will need to plot X/Y data and use colors or shapes to
 display the associated sediments/contaminants data. We will probably
-find the packages `leaflet` and `sp` useful. Pie charts may be useful to
-overlay on map plots to display percent composition of sediment types.
+find the packages `sf`, `leaflet` and `sp` useful. Pie charts may be
+useful to overlay on map plots to display percent composition of
+sediment types.
 
 Histograms and density plots will be useful in depicting the
 relationship of single numeric variables, such as statistical
@@ -834,4 +835,5 @@ does make the smaller peaks on this density plot more visible.
 
 Removing zeros from this data and visualizing using a hex plot helps
 show where concentrations of DDT are highest. The high count hexagons at
-lower left are apparently in and around Boston Harbor.
+lower left are where more samples in which DDT was detected were
+collected.
