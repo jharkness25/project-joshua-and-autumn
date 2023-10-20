@@ -2,7 +2,7 @@
 title: "Gulf of Maine Contaminated Sediments analysis"
 author: "Joshua Harkness and Autumn Pauly"
 date: "2023-10-20"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
